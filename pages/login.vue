@@ -35,7 +35,7 @@
                 color="primary"
                 large
                 block
-                :disabled="isDisableButton"
+                :disabled="isButtonDisabled"
                 @click="login"
               >
                 Login
@@ -62,7 +62,7 @@ export default {
     }
   },
   computed: {
-    isDisableButton() {
+    isButtonDisabled() {
       return this.isAuthorizing || !this.valid
     }
   },

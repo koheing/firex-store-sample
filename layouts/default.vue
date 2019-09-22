@@ -45,7 +45,7 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-comment-text',
           title: 'Comments',
           to: '/comments'
         }
