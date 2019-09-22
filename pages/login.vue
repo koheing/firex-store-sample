@@ -16,7 +16,7 @@
               <v-form ref="form" v-model="valid">
                 <v-text-field
                   v-model="email"
-                  label="mail"
+                  label="Email"
                   :rules="emailRules"
                   required
                 ></v-text-field>

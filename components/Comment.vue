@@ -37,25 +37,6 @@ export default {
 </script>
 
 <style scoped>
-.send {
-  position: fixed;
-  z-index: 3;
-  bottom: 37px;
-  left: 0;
-}
-
-.text-field {
-  margin-left: 20px;
-}
-
-.send-button {
-  margin-left: 20px;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
 .circle {
   display: inline-block;
   width: 40px;
@@ -70,9 +51,5 @@ export default {
   position: absolute;
   right: 0;
   padding-right: 12px;
-}
-
-.comments {
-  padding-bottom: 70px;
 }
 </style>
