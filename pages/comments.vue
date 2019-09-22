@@ -2,35 +2,24 @@
   <v-layout row wrap pl-5 pr-5>
     <v-flex xs12 class="comments">
       <v-list>
-        <v-list-item v-for="comment in comments" :key="comment.date.seconds">
-          <v-list-item-avatar>
-            <div class="circle">{{ comment.user.displayName[0] }}</div>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title>{{
-              comment.user.displayName
-            }}</v-list-item-title>
-            <v-list-item-subtitle
-              >{{ comment.message }}
-              <p class="time">
-                {{ comment.date | dateFormatter }}
-              </p></v-list-item-subtitle
-            >
-          </v-list-item-content>
-        </v-list-item>
+        <comment
+          v-for="comment in comments"
+          :key="comment.date.seconds"
+          :comment="comment"
+        >
+        </comment>
       </v-list>
     </v-flex>
-    <v-card class="text-field" width="100%">
-      <v-layout row wrap>
+    <v-card class="send elevation-8" width="100%">
+      <v-layout row wrap align-content-space-between justify-space-between>
         <v-flex xs10>
           <v-text-field
             v-model="message"
             placeholder="input message"
-            class="text"
+            class="text-field"
           ></v-text-field>
         </v-flex>
-        <v-flex xs2 align-self-center>
+        <v-flex xs2 align-self-center class="text-align-center">
           <v-btn
             class="send-button"
             color="primary"
@@ -46,12 +35,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import { actionTypes } from 'firex-store'
+import CommentVue from '../components/Comment.vue'
 
 export default {
   middleware: 'authorized',
+  components: {
+    comment: CommentVue
+  },
   data: () => ({
-    message: '',
-    commentsForView: []
+    message: ''
   }),
   async fetch({ store }) {
     store.commit('comment/INITIALIZED') // if you unsubscribed, remove this code, please
@@ -62,9 +54,6 @@ export default {
       comments: 'comment/comments',
       user: 'user/user'
     })
-  },
-  created() {
-    this.commentsForView = this.comments
   },
   destroyed() {
     this.$store.dispatch(`comment/${actionTypes.COLLECTION_UNSUBSCRIBE}`)
@@ -79,50 +68,29 @@ export default {
       this.$store.dispatch('comment/CREATE', { comment })
       this.message = ''
     }
-  },
-  filters: {
-    dateFormatter(timestamp) {
-      const date = new Date(timestamp.seconds * 1000)
-      const hours = date.getHours()
-      const minutes = '0' + date.getMinutes()
-      const seconds = '0' + date.getSeconds()
-
-      return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
-    }
   }
 }
 </script>
 
 <style scoped>
-.text-field {
+.send {
   position: fixed;
   z-index: 3;
-  bottom: 37px;
+  bottom: 36px;
   left: 0;
 }
 
-.text {
+.text-field {
   margin-left: 20px;
+  width: 100%;
 }
 
 .send-button {
   margin-left: 20px;
 }
 
-.circle {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #349fcb;
+.text-align-center {
   text-align: center;
-  line-height: 40px;
-}
-
-.time {
-  position: absolute;
-  right: 0;
-  padding-right: 12px;
 }
 
 .comments {

@@ -25,7 +25,6 @@ export const actions = {
     ref: firestore.collection('/comments').orderBy('date', 'asc'),
     options: {
       mapper: (data) => ({
-        id: data.docId,
         message: data.message,
         date: data.date,
         user: {
