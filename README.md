@@ -1,11 +1,20 @@
 # nuxt-ssr-with-firex-store-sample
 
-> chat sample
-
 
 ## Before Start
 
 - Firebase Authentication is used, so you needed to add User Authentication
+
+- add follow var in `environments/firebase.js`
+
+```javascript
+
+export const friebaseConfig = {
+    apiKey: '******',
+    projectId: '******',
+    ....
+}
+```
 
 ## Build Setup
 
