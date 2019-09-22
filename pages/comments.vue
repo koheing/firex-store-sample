@@ -19,7 +19,7 @@
             class="text-field"
           ></v-text-field>
         </v-flex>
-        <v-flex xs2 align-self-center class="text-align-center">
+        <v-flex xs2 align-self-center class="text-center">
           <v-btn
             class="send-button"
             color="primary"
@@ -87,10 +87,6 @@ export default {
 
 .send-button {
   margin-left: 20px;
-}
-
-.text-align-center {
-  text-align: center;
 }
 
 .comments {

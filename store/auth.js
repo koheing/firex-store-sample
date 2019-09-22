@@ -34,10 +34,10 @@ export const actions = {
       .then(() => true)
       .catch((_) => false)
   },
-  IS_AUTHORIZED: ({ state, commit }) => {
-    const user = new Promise((resolve, reject) => {
+  SET_AUTH_STATE: async ({ state, commit }) => {
+    const user = await new Promise((resolve, reject) => {
       auth.onAuthStateChanged((user) => {
-        resolve(user || false)
+        resolve(user || null)
       })
     })
 
