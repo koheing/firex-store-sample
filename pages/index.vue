@@ -44,7 +44,7 @@ export default {
     isLoading: false
   }),
   async fetch({ store }) {
-    await store.dispatch('user/SUBSCRIBE', { uid: store.state.auth.uid })
+    await store.dispatch('user/SUBSCRIBE', { uid: store.getters['auth/uid'] })
   },
   computed: {
     ...mapGetters({

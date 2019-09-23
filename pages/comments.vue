@@ -34,8 +34,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { actionTypes } from 'firex-store'
+import { actionTypes, findFirestore } from 'firex-store'
 import CommentVue from '../components/Comment.vue'
+import { firestore } from '../plugins/firebase'
 
 export default {
   middleware: 'authorized',
@@ -45,18 +46,26 @@ export default {
   data: () => ({
     message: ''
   }),
+  async asyncData({ store }) {
+    const user = await findFirestore({
+      ref: firestore.collection('/users').doc(store.getters['auth/uid']),
+      options: {
+        onCompleted: () => console.log('can fetch')
+      }
+    })
+    return { user }
+  },
   async fetch({ store }) {
-    store.commit('comment/INITIALIZED') // if you unsubscribed, remove this code, please
+    // store.commit('comment/INITIALIZED') //  if you'd like to unsubscribe, comment out, please
     await store.dispatch(`comment/${actionTypes.COLLECTION_SUBSCRIBE}`)
   },
   computed: {
     ...mapGetters({
-      comments: 'comment/comments',
-      user: 'user/user'
+      comments: 'comment/comments'
     })
   },
   destroyed() {
-    this.$store.dispatch(`comment/${actionTypes.COLLECTION_UNSUBSCRIBE}`)
+    // this.$store.dispatch(`comment/${actionTypes.COLLECTION_UNSUBSCRIBE}`) // iif you'd like to unsubscribe, comment out, please
   },
   methods: {
     pushComment() {

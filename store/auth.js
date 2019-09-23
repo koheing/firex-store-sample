@@ -33,16 +33,5 @@ export const actions = {
     return dispatch('user/CREATE_IF_NOT_EXIST', { user }, { root: true })
       .then(() => true)
       .catch((_) => false)
-  },
-  SET_AUTH_STATE: async ({ state, commit }) => {
-    const user = await new Promise((resolve, reject) => {
-      auth.onAuthStateChanged((user) => {
-        resolve(user || null)
-      })
-    })
-
-    if (user !== null && state.uid === null) {
-      commit('set', { uid: user.id })
-    }
   }
 }

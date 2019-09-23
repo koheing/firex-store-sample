@@ -1,5 +1,5 @@
 export const actions = {
-  async nuxtServerInit({ state, dispatch }) {
-    await dispatch('auth/SET_AUTH_STATE')
+  nuxtServerInit({ state, dispatch }) {
+    console.log('init store')
   }
 }
