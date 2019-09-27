@@ -29,7 +29,9 @@ export const actions = {
       commit,
       ref,
       options: {
-        onCompleted
+        onCompleted,
+        afterMutationCalled: (payload) =>
+          console.log(`${payload.data.docId} fetched`)
       }
     })
   },

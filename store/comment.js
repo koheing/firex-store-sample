@@ -31,7 +31,8 @@ export const actions = {
           docId: data.user.docId,
           displayName: data.user.displayName
         }
-      })
+      }),
+      afterMutationCalled: (payload) => console.log(payload)
     }
   }),
   ...firestoreUnsubscribeActions({ type: 'collection' }),
