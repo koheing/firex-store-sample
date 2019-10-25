@@ -1,7 +1,16 @@
 <template>
   <v-layout row wrap pl-5 pr-5>
     <v-flex xs12 class="comments">
-      <v-list>
+      <div class="text-center">
+        <v-progress-circular
+          :size="70"
+          :width="10"
+          color="primary"
+          indeterminate
+          v-if="!isLoaded"
+        ></v-progress-circular>
+      </div>
+      <v-list v-if="isLoaded">
         <comment
           v-for="comment in comments"
           :key="comment.date.seconds"
@@ -34,7 +43,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { actionTypes, findFirestore } from 'firex-store'
+import { from, actionTypes } from 'firex-store'
 import CommentVue from '../components/Comment.vue'
 import { firestore } from '../plugins/firebase'
 
@@ -47,12 +56,11 @@ export default {
     message: ''
   }),
   async asyncData({ store }) {
-    const user = await findFirestore({
-      ref: firestore.collection('/users').doc(store.getters['auth/uid']),
-      options: {
-        onCompleted: () => console.log('can fetch')
-      }
-    })
+    const user = await from(
+      firestore.collection('/users').doc(store.getters['auth/uid'])
+    )
+      .once()
+      .find({ completionHandler: () => console.log('can fetch') })
     return { user }
   },
   async fetch({ store }) {
@@ -61,7 +69,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      comments: 'comment/comments'
+      comments: 'comment/comments',
+      isLoaded: 'comment/isLoaded'
     })
   },
   destroyed() {

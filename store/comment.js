@@ -1,42 +1,56 @@
 import {
   firestoreMutations,
-  firestoreSubscribeActions,
-  firestoreUnsubscribeActions
+  firestoreUnsubscribeAction,
+  FirestoreUnsubscriber,
+  FirestoreSubscriber,
+  actionTypes
 } from 'firex-store'
 import { firestore } from '../plugins/firebase'
 
 export const state = () => ({
-  comments: []
+  comments: [],
+  isLoaded: false
 })
 
 export const getters = {
-  comments: (state) => state.comments
+  comments: (state) => state.comments,
+  isLoaded: (state) => state.isLoaded
 }
 
 export const mutations = {
-  ...firestoreMutations({ statePropName: 'comments', type: 'collection' }),
+  ...firestoreMutations('collection'),
   INITIALIZED: (state) => {
     state.comments = []
+  },
+  SET_LOAD_STATE: (state, isLoaded) => {
+    state.isLoaded = isLoaded
   }
 }
 
 export const actions = {
-  ...firestoreSubscribeActions({
-    ref: firestore.collection('/comments').orderBy('date', 'asc'),
-    options: {
-      mapper: (data) => ({
-        message: data.message,
-        date: data.date,
-        user: {
-          docId: data.user.docId,
-          displayName: data.user.displayName
+  [actionTypes.collection.SUBSCRIBE]: ({ state, commit }) => {
+    FirestoreSubscriber.from(
+      firestore.collection('/comments').orderBy('date', 'asc')
+    )
+      .bindTo('comments')
+      .subscribe(state, commit, {
+        mapper: (data) => ({
+          message: data.message,
+          date: data.date,
+          user: {
+            docId: data.user.docId,
+            displayName: data.user.displayName
+          }
+        }),
+        afterMutationCalled: (payload) => {
+          commit('SET_LOAD_STATE', payload.isLast)
         }
-      }),
-      afterMutationCalled: (payload) => console.log(payload)
-    }
+      })
+  },
+  ...firestoreUnsubscribeAction(FirestoreUnsubscriber.unbind('comments'), {
+    type: 'collection'
   }),
-  ...firestoreUnsubscribeActions({ type: 'collection' }),
-  CREATE: ({ state }, { comment }) => {
+  CREATE: (_, { comment }) => {
     firestore.collection('/comments').add(comment)
   }
 }
