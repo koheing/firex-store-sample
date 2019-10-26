@@ -10,7 +10,7 @@ export const getters = {
 }
 
 export const mutations = {
-  ...firestoreMutations({ statePropName: 'user', type: 'document' })
+  ...firestoreMutations('document')
 }
 
 export const actions = {
