@@ -43,6 +43,9 @@ export const actions = {
           }
         }),
         afterMutationCalled: (payload) => {
+          if (payload.isLast) {
+            return
+          }
           commit('SET_LOAD_STATE', payload.isLast)
         }
       })
