@@ -43,7 +43,7 @@ export const actions = {
           }
         }),
         afterMutationCalled: (payload) => {
-          if (payload.isLast) {
+          if (typeof payload.isLast === 'undefined') {
             return
           }
           commit('SET_LOAD_STATE', payload.isLast)
