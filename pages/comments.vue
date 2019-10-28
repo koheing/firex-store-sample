@@ -65,7 +65,7 @@ export default {
   },
   async fetch({ store }) {
     // store.commit('comment/INITIALIZED') //  if you'd like to unsubscribe, comment out, please
-    await store.dispatch(`comment/${actionTypes.COLLECTION_SUBSCRIBE}`)
+    await store.dispatch(`comment/${actionTypes.collection.SUBSCRIBE}`)
   },
   computed: {
     ...mapGetters({
@@ -74,7 +74,7 @@ export default {
     })
   },
   destroyed() {
-    // this.$store.dispatch(`comment/${actionTypes.COLLECTION_UNSUBSCRIBE}`) // iif you'd like to unsubscribe, comment out, please
+    // this.$store.dispatch(`comment/${actionTypes.document.UNSUBSCRIBE}`) // iif you'd like to unsubscribe, comment out, please
   },
   methods: {
     pushComment() {

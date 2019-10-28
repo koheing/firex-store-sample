@@ -1,7 +1,7 @@
 import {
   firestoreMutations,
   firestoreUnsubscribeAction,
-  FirestoreUnsubscriber,
+  on,
   FirestoreSubscriber,
   actionTypes
 } from 'firex-store'
@@ -50,9 +50,7 @@ export const actions = {
         }
       })
   },
-  ...firestoreUnsubscribeAction(FirestoreUnsubscriber.unbind('comments'), {
-    type: 'collection'
-  }),
+  ...firestoreUnsubscribeAction(on('comments'), { type: 'collection' }),
   CREATE: (_, { comment }) => {
     firestore.collection('/comments').add(comment)
   }

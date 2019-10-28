@@ -34,7 +34,7 @@ export const actions = {
       .once()
       .find()
 
-    if (tmp != null) return
+    if (tmp != null && tmp.docId) return
     await firestore
       .collection('/users')
       .doc(user.uid)
