@@ -35,17 +35,22 @@ export const actions = {
       .find()
 
     if (tmp != null && tmp.docId) return
-    await firestore
-      .collection('/users')
-      .doc(user.uid)
-      .set({
-        displayName: user.displayName || 'None',
-        email: user.email || 'test@gmail.com'
+    await to(firestore.collection('/users').doc(user.id)).set(user, {
+      mapper: (data) => ({
+        displayName: data.displayName || 'None',
+        email: data.email || 'test@gmail.com'
       })
+    })
   },
   UPDATE: async (_, { user }) => {
     await to(firestore.collection('/users').doc(user.docId))
       .transaction()
-      .mergeSet({ displayName: user.displayName, email: user.email })
+      .mergeSet(user, {
+        mapper: (data) => ({
+          displayName: data.displayName,
+          email: data.email
+        }),
+        completionHandler: () => console.log('completed')
+      })
   }
 }
