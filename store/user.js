@@ -1,4 +1,4 @@
-import { from, firestoreMutations } from 'firex-store'
+import { from, firestoreMutations, to } from 'firex-store'
 import { firestore } from '../plugins/firebase'
 
 export const state = () => ({
@@ -44,9 +44,8 @@ export const actions = {
       })
   },
   UPDATE: async (_, { user }) => {
-    await firestore
-      .collection('/users')
-      .doc(user.docId)
-      .set({ displayName: user.displayName, email: user.email })
+    await to(firestore.collection('/users').doc(user.docId))
+      .transaction()
+      .mergeSet({ displayName: user.displayName, email: user.email })
   }
 }

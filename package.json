@@ -15,7 +15,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "firebase": "^6.6.2",
-    "firex-store": "^1.1.0",
+    "firex-store": "^1.2.0",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "vue-router": "^3.1.3"

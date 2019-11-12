@@ -3,7 +3,8 @@ import {
   firestoreUnsubscribeAction,
   on,
   FirestoreSubscriber,
-  actionTypes
+  actionTypes,
+  to
 } from 'firex-store'
 import { firestore } from '../plugins/firebase'
 
@@ -51,7 +52,7 @@ export const actions = {
       })
   },
   ...firestoreUnsubscribeAction(on('comments'), { type: 'collection' }),
-  CREATE: (_, { comment }) => {
-    firestore.collection('/comments').add(comment)
+  CREATE: async (_, { comment }) => {
+    await to(firestore.collection('/comments')).add(comment)
   }
 }
